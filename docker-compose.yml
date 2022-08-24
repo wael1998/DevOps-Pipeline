@@ -1,0 +1,22 @@
+# docker-compose.yaml    #ls -l /var/run/docker.sock =  and u can configure permission just login as root and config chmod 666 /var/run/docker.sock
+  version: '3.8'
+  services:
+    jenkins:
+      image: jenkins/jenkins:lts
+      privileged: true
+      user: root
+      ports:
+       - 8080:8080
+       - 50000:50000
+      container_name: jenkins
+      volumes:
+       - ./jenkins/jenkins-configuration:/var/jenkins_home
+       - /var/run/docker.sock:/var/run/docker.sock #make docker command available in jenkins container also i see an athor command : $(which docker):/usr/bin/docker  
+    nexus:
+      image: sonatype/nexus3
+      ports:
+       - 8081:8081
+      container_name: nexus 
+      volumes:
+       - ./nexus/nexus-d:/sonatype-work 
+  
